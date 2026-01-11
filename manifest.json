@@ -1,0 +1,19 @@
+{
+	"manifest_version": 3,
+	"name": "Audio Master",
+	"description": "Audio Master is your simple and all around mixer, equalizer, and audio controller.",
+	"version": "1.0",
+	"action": {
+		"default_popup": "popup/popup.html"
+	},
+	"background": {
+		"service_worker": "background.js",
+		"type": "module"
+	},
+  "permissions": [
+    "storage",
+    "audio",
+    "activeTab",
+    "scripting"
+  ]
+}
