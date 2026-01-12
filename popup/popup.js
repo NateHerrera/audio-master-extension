@@ -1,2 +1,3 @@
-const volumeSlider = document.getElementById("volumeSlider")
+const volumeSlider = document.getElementById("volumeSlider");
 
+const audioContext = new AudioContext();
