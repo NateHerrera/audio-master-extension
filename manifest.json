@@ -7,13 +7,7 @@
 		"default_popup": "popup/popup.html"
 	},
 	"background": {
-		"service_worker": "background.js",
-		"type": "module"
+		"service_worker": "background.js"
 	},
-  "permissions": [
-    "storage",
-    "audio",
-    "activeTab",
-    "scripting"
-  ]
+	"permissions": ["activeTab", "scripting"]
 }
