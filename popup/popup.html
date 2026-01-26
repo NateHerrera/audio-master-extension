@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,17 +10,21 @@
 		<div class="container m-3">
 			<h1 class="title">Audio Master</h1>
 		</div>
-		<div class="container m-3 field has-addons">
-			<p class="control">
-				<input
-					id="volumeSlider"
-					type="range"
-					value="50"
-					min="0"
-					max="100"
-					step="5"
-				/>
-			</p>
+		<div class="container m-3 has-addons">
+			<h1 class="is-normal" style="width: auto">Volume Slider</h1>
+			<div class="container">
+				<p class="control is-expanded">
+					<input
+						id="volumeSlider"
+						type="range"
+						value="50"
+						min="0"
+						max="100"
+						step="5"
+						class="is-fullwidth"
+					/>
+				</p>
+			</div>
 		</div>
 	</body>
 	<script src="popup.js"></script>
