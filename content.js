@@ -5,6 +5,7 @@ if (window.__audioMasterInjected) {
 
 	let audioCtx;
 	let gainNode;
+	let biquadFilter;
 
 	function initAudio() {
 		const video = document.querySelector("video");
@@ -14,6 +15,7 @@ if (window.__audioMasterInjected) {
 		}
 
 		audioCtx = new AudioContext();
+		biquadFilter = audioCtx.createBiquadFilter();
 
 		document.addEventListener(
 			"click",
@@ -28,8 +30,6 @@ if (window.__audioMasterInjected) {
 		const source = audioCtx.createMediaElementSource(video);
 		gainNode = audioCtx.createGain();
 		gainNode.gain.value = 1.0;
-
-		source.connect(gainNode).connect(audioCtx.destination);
 
 		console.log("Audio Master initialized");
 	}
