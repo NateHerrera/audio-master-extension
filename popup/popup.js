@@ -17,7 +17,7 @@ volumeSlider.addEventListener("input", async () => {
 
 	chrome.tabs.sendMessage(tabId, {
 		type: "SET_VOLUME",
-		value: volumeSlider.value / 50,
+		value: volumeSlider.value / 100,
 	});
 });
 
@@ -26,6 +26,6 @@ bassSlider.addEventListener("input", async () => {
 
 	chrome.tabs.sendMessage(tabId, {
 		type: "SET_BASS",
-		value: bassSlider.value / 50,
+		value: bassSlider.value / 100,
 	});
 });
