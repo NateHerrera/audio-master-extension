@@ -5,7 +5,8 @@ if (window.__audioMasterInjected) {
 
 	let audioCtx;
 	let gainNode;
-	let biquadFilter;
+	let lowShelfBiquadFilter;
+	let highShelfBiquadFilter;
 
 	function initAudio() {
 		const video = document.querySelector("video");
@@ -23,20 +24,25 @@ if (window.__audioMasterInjected) {
 					audioCtx.resume();
 				}
 			},
-			{ once: true },
+			{ once: true }
 		);
 
 		const source = audioCtx.createMediaElementSource(video);
 		gainNode = audioCtx.createGain();
-		biquadFilter = audioCtx.createBiquadFilter();
-		biquadFilter.type = "lowshelf";
-		biquadFilter.frequency.setValueAtTime(200, audioCtx.currentTime);
-		biquadFilter.gain.value = 0; // neutral
 		gainNode.gain.value = 1.0;
+		lowShelfBiquadFilter = audioCtx.createBiquadFilter();
+		lowShelfBiquadFilter.type = "lowshelf";
+		lowShelfBiquadFilter.frequency.setValueAtTime(135, audioCtx.currentTime); // 135 Hz/Frequency
+		lowShelfBiquadFilter.gain.value = 0;
+		highShelfBiquadFilter = audioCtx.createBiquadFilter();
+		highShelfBiquadFilter.type = "highshelf";
+		highShelfBiquadFilter.frequency.setValueAtTime(6000, audioCtx.currentTime); // 6k Hz/Frequency
+		highShelfBiquadFilter.gain.value = 0;
 
-		// connect nodes: source -> biquad -> gain -> destination
-		source.connect(biquadFilter);
-		biquadFilter.connect(gainNode);
+		// connect nodes: source -> lowShelf(bass) -> highShelf(treble) -> gain -> destination
+		source.connect(lowShelfBiquadFilter);
+		lowShelfBiquadFilter.connect(highShelfBiquadFilter);
+		highShelfBiquadFilter.connect(gainNode);
 		gainNode.connect(audioCtx.destination);
 
 		console.log("Audio Master initialized");
@@ -48,8 +54,11 @@ if (window.__audioMasterInjected) {
 		if (msg.type === "SET_VOLUME" && gainNode) {
 			gainNode.gain.value = msg.value;
 		}
-		if (msg.type === "SET_BASS" && biquadFilter) {
-			biquadFilter.gain.value = (msg.value - 0.5) * 25;
+		if (msg.type === "SET_BASS" && lowShelfBiquadFilter) {
+			lowShelfBiquadFilter.gain.value = (msg.value - 0.5) * 25;
+		}
+		if (msg.type === "SET_TREBLE" && highShelfBiquadFilter) {
+			highShelfBiquadFilter.gain.value = (msg.value - 0.5) * 25;
 		}
 	});
 }

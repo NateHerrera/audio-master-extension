@@ -1,5 +1,6 @@
 const volumeSlider = document.getElementById("volumeSlider");
 const bassSlider = document.getElementById("bassSlider");
+const trebleSlider = document.getElementById("trebleSlider");
 
 async function ensureInjected() {
 	const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -27,5 +28,14 @@ bassSlider.addEventListener("input", async () => {
 	chrome.tabs.sendMessage(tabId, {
 		type: "SET_BASS",
 		value: bassSlider.value / 100,
+	});
+});
+
+trebleSlider.addEventListener("input", async () => {
+	const tabId = await ensureInjected(); /// inject first
+
+	chrome.tabs.sendMessage(tabId, {
+		type: "SET_TREBLE",
+		value: trebleSlider.value / 100,
 	});
 });
