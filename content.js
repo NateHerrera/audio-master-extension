@@ -25,7 +25,7 @@ if (window.__audioMasterInjected) {
 					audioCtx.resume();
 				}
 			},
-			{ once: true }
+			{ once: true },
 		);
 
 		// video source node
@@ -38,19 +38,19 @@ if (window.__audioMasterInjected) {
 		// low shelf (bass)
 		lowShelfBiquadFilter = audioCtx.createBiquadFilter();
 		lowShelfBiquadFilter.type = "lowshelf";
-		lowShelfBiquadFilter.frequency.setValueAtTime(135, audioCtx.currentTime); // 135 Hz/Frequency
+		lowShelfBiquadFilter.frequency.setValueAtTime(100, audioCtx.currentTime); // 100 Hz/Frequency
 		lowShelfBiquadFilter.gain.value = 0;
 
 		// mid shelf (mids)
 		midShelfBiquadFilter = audioCtx.createBiquadFilter();
 		midShelfBiquadFilter.type = "peaking";
-		midShelfBiquadFilter.frequency.setValueAtTime(1000, audioCtx.currentTime); // 1k Hz/Frequency
+		midShelfBiquadFilter.frequency.setValueAtTime(2500, audioCtx.currentTime); // 2.5k Hz/Frequency
 		midShelfBiquadFilter.gain.value = 0;
 
 		// top shelf (treble)
 		highShelfBiquadFilter = audioCtx.createBiquadFilter();
 		highShelfBiquadFilter.type = "highshelf";
-		highShelfBiquadFilter.frequency.setValueAtTime(6000, audioCtx.currentTime); // 6k Hz/Frequency
+		highShelfBiquadFilter.frequency.setValueAtTime(10000, audioCtx.currentTime); // 10k Hz/Frequency
 		highShelfBiquadFilter.gain.value = 0;
 
 		// connect nodes: source -> lowShelf(bass) -> midShelf(mids) -> highShelf(treble) -> gain -> destination
