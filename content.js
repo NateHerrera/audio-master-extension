@@ -78,5 +78,7 @@ if (window.__audioMasterInjected) {
 		if (msg.type === "SET_TREBLE" && highShelfBiquadFilter) {
 			highShelfBiquadFilter.gain.value = (msg.value - 0.5) * 25;
 		}
+		if (msg.type === "TOGGLE_EXTENSION") {
+		}
 	});
 }

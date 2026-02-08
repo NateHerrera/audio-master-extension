@@ -63,3 +63,86 @@ document.addEventListener("DOMContentLoaded", () => {
 		dropdown.classList.remove("is-active");
 	});
 });
+
+// light/dark mode colors
+document.addEventListener("DOMContentLoaded", () => {
+	const lightDarkMode = document.getElementById("lightDarkModeIcon");
+	const iconColor = document.getElementById("iconColor");
+	const titleColor = document.getElementById("titleColor");
+	const dropdownColor = document.getElementById("dropdownColor");
+
+	lightDarkMode.addEventListener("click", () => {
+		if (lightDarkMode.classList.contains("fa-moon")) {
+			// get rid of the moon icon
+			lightDarkMode.classList.remove("fas");
+			lightDarkMode.classList.remove("fa-moon");
+			// add sun icon
+			lightDarkMode.classList.add("fas");
+			lightDarkMode.classList.add("fa-sun");
+			// change color of the icon
+			iconColor.classList.remove("has-text-link");
+			iconColor.classList.add("has-text-warning");
+			// change color of title
+			titleColor.classList.remove("has-text-warning");
+			titleColor.classList.add("has-text-link");
+			// change color of dropdown
+			dropdownColor.classList.remove("is-warning");
+			dropdownColor.classList.add("is-link");
+			// change theme
+			document.documentElement.setAttribute("data-theme", "light");
+		} else {
+			// get rid of the sun icon
+			lightDarkMode.classList.remove("fas");
+			lightDarkMode.classList.remove("fa-sun");
+			// add moon icon
+			lightDarkMode.classList.add("fas");
+			lightDarkMode.classList.add("fa-moon");
+			// change color of the icon
+			iconColor.classList.remove("has-text-warning");
+			iconColor.classList.add("has-text-link");
+			// change color of title
+			titleColor.classList.remove("has-text-link");
+			titleColor.classList.add("has-text-warning");
+			// change color of dropdown
+			dropdownColor.classList.remove("is-link");
+			dropdownColor.classList.add("is-warning");
+			// change theme
+			document.documentElement.setAttribute("data-theme", "dark");
+		}
+	});
+});
+
+// toggle on and off
+document.addEventListener("DOMContentLoaded", () => {
+	const toggleSwitch = document.getElementById("switchModeIcon");
+	const toggleSwitchColor = document.getElementById("iconSwitchColor");
+
+	toggleSwitch.addEventListener("click", async () => {
+		if (toggleSwitch.classList.contains("fa-toggle-off")) {
+			// remove toggle off
+			toggleSwitch.classList.remove("fa-solid");
+			toggleSwitch.classList.remove("fa-toggle-off");
+			// add toggle on
+			toggleSwitch.classList.add("fa-solid");
+			toggleSwitch.classList.add("fa-toggle-on");
+			// change color of the icon
+			toggleSwitchColor.classList.remove("has-text-grey");
+			toggleSwitchColor.classList.add("has-text-success");
+		} else {
+			toggleSwitch.classList.remove("fa-solid");
+			toggleSwitch.classList.remove("fa-toggle-on");
+			// add toggle on
+			toggleSwitch.classList.add("fa-solid");
+			toggleSwitch.classList.add("fa-toggle-off");
+			// change color of the icon
+			toggleSwitchColor.classList.remove("has-text-success");
+			toggleSwitchColor.classList.add("has-text-grey");
+		}
+
+		const tabId = await ensureInjected();
+		chromes.tabs.sendMessage(tabId, {
+			type: "TOGGLE_EXTENSION",
+			isOn: toggleSwitch.classList.contains("fa-toggle-on"),
+		});
+	});
+});

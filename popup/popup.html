@@ -9,28 +9,30 @@
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 		/>
+		<link rel="stylesheet" href="./styles.css"/>
 	</head>
 	<body>
 		<div class="container m-3">
-			<h1 class="title has-text-primary">
+			<h1 class="title has-text-warning" id="titleColor">
 				Audio Master
-				<span class="icon is-large">
-					<i class="fas fa-moon" aria-hidden="true"></i>
+				<span class="icon is-large has-text-grey pl-5" id="iconSwitchColor">
+					<i id="switchModeIcon" class="fa-solid fa-toggle-off" aria-hidden="true"></i>
 				</span>
 			</h1>
 		</div>
 		<div class="container m-3">
-			<h1 class="is-normal has-text-white" style="width: auto">
-				Audio Presets
+			<!-- <h1 class="is-normal has-text-weight-bold" style="width: auto">
+				Audio Presets -->
 			</h1>
 			<div class="dropdown is-left">
 				<div class="dropdown-trigger">
 					<button
-						class="button"
+						class="button is-warning is-outlined"
 						aria-haspopup="true"
 						aria-controls="dropdown-menu3"
+						id="dropdownColor"
 					>
-						<span>Presets</span>
+						<span>Audio Presets</span>
 						<span class="icon is-small">
 							<i
 								class="fas fa-sharp fa-regular fa-angle-down"
@@ -55,7 +57,7 @@
 			</div>
 		</div>
 		<div class="container m-3 has-addons">
-			<h1 class="is-normal has-text-white" style="width: auto">
+			<h1 class="is-normal has-text-weight-bold" style="width: auto">
 				Volume Slider
 			</h1>
 			<div class="container">
@@ -72,7 +74,9 @@
 			</div>
 		</div>
 		<div class="container m-3 has-addons">
-			<h1 class="is-normal has-text-white" style="width: auto">Bass Slider</h1>
+			<h1 class="is-normal has-text-weight-bold" style="width: auto">
+				Bass Slider
+			</h1>
 			<div class="container">
 				<p class="control is-expanded">
 					<input
@@ -87,7 +91,9 @@
 			</div>
 		</div>
 		<div class="container m-3 has-addons">
-			<h1 class="is-normal has-text-white" style="width: auto">Mid Slider</h1>
+			<h1 class="is-normal has-text-weight-bold" style="width: auto">
+				Mid Slider
+			</h1>
 			<div class="container">
 				<p class="control is-expanded">
 					<input
@@ -102,7 +108,7 @@
 			</div>
 		</div>
 		<div class="container m-3 has-addons">
-			<h1 class="is-normal has-text-white" style="width: auto">
+			<h1 class="is-normal has-text-weight-bold" style="width: auto">
 				Treble Slider
 			</h1>
 			<div class="container">
@@ -117,6 +123,11 @@
 					/>
 				</p>
 			</div>
+		</div>
+		<div class="container has-text-right pr-4 pb-4">
+			<span class="icon has-text-info" id="iconColor">
+					<i id="lightDarkModeIcon" class="fas fa-2x fa-moon" aria-hidden="true"></i>
+			</span>
 		</div>
 	</body>
 	<script src="popup.js"></script>
