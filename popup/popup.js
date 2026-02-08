@@ -49,3 +49,17 @@ trebleSlider.addEventListener("input", async () => {
 		value: trebleSlider.value / 100,
 	});
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+	const dropdown = document.querySelector(".dropdown");
+	const dropdownTrigger = dropdown.querySelector(".dropdown-trigger button");
+
+	dropdownTrigger.addEventListener("click", (event) => {
+		event.stopPropagation();
+		dropdown.classList.toggle("is-active");
+	});
+
+	document.addEventListener("click", () => {
+		dropdown.classList.remove("is-active");
+	});
+});

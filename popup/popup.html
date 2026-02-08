@@ -1,17 +1,63 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="light">
+<!doctype html>
+<html lang="en" data-theme="dark">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Audio Master Extension</title>
 		<link rel="stylesheet" href="bulma.min.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+		/>
 	</head>
 	<body>
 		<div class="container m-3">
-			<h1 class="title">Audio Master</h1>
+			<h1 class="title has-text-primary">
+				Audio Master
+				<span class="icon is-large">
+					<i class="fas fa-moon" aria-hidden="true"></i>
+				</span>
+			</h1>
+		</div>
+		<div class="container m-3">
+			<h1 class="is-normal has-text-white" style="width: auto">
+				Audio Presets
+			</h1>
+			<div class="dropdown is-left">
+				<div class="dropdown-trigger">
+					<button
+						class="button"
+						aria-haspopup="true"
+						aria-controls="dropdown-menu3"
+					>
+						<span>Presets</span>
+						<span class="icon is-small">
+							<i
+								class="fas fa-sharp fa-regular fa-angle-down"
+								aria-hidden="true"
+							></i>
+						</span>
+					</button>
+				</div>
+				<div class="dropdown-menu" id="dropdown-menu3" role="menu">
+					<div class="dropdown-content">
+						<a href="#" class="dropdown-item"> Cinema </a>
+						<a href="#" class="dropdown-item"> Gaming </a>
+						<a href="#" class="dropdown-item"> Flat </a>
+						<a href="#" class="dropdown-item"> R&B </a>
+						<a href="#" class="dropdown-item"> Hip-Hop </a>
+						<a href="#" class="dropdown-item"> Rock </a>
+						<a href="#" class="dropdown-item"> Grunge </a>
+						<!-- <hr class="dropdown-divider" />
+						<a href="#" class="dropdown-item"> More </a> -->
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="container m-3 has-addons">
-			<h1 class="is-normal" style="width: auto">Volume Slider</h1>
+			<h1 class="is-normal has-text-white" style="width: auto">
+				Volume Slider
+			</h1>
 			<div class="container">
 				<p class="control is-expanded">
 					<input
@@ -26,7 +72,7 @@
 			</div>
 		</div>
 		<div class="container m-3 has-addons">
-			<h1 class="is-normal" style="width: auto">Bass Slider</h1>
+			<h1 class="is-normal has-text-white" style="width: auto">Bass Slider</h1>
 			<div class="container">
 				<p class="control is-expanded">
 					<input
@@ -41,7 +87,7 @@
 			</div>
 		</div>
 		<div class="container m-3 has-addons">
-			<h1 class="is-normal" style="width: auto">Mid Slider</h1>
+			<h1 class="is-normal has-text-white" style="width: auto">Mid Slider</h1>
 			<div class="container">
 				<p class="control is-expanded">
 					<input
@@ -56,7 +102,9 @@
 			</div>
 		</div>
 		<div class="container m-3 has-addons">
-			<h1 class="is-normal" style="width: auto">Treble Slider</h1>
+			<h1 class="is-normal has-text-white" style="width: auto">
+				Treble Slider
+			</h1>
 			<div class="container">
 				<p class="control is-expanded">
 					<input
