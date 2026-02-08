@@ -5,6 +5,7 @@ if (window.__audioMasterInjected) {
 
 	let audioCtx;
 	let gainNode;
+	let source;
 	let lowShelfBiquadFilter;
 	let highShelfBiquadFilter;
 	let midShelfBiquadFilter;
@@ -29,7 +30,7 @@ if (window.__audioMasterInjected) {
 		);
 
 		// video source node
-		const source = audioCtx.createMediaElementSource(video);
+		source = audioCtx.createMediaElementSource(video);
 
 		// gain node
 		gainNode = audioCtx.createGain();
@@ -67,7 +68,7 @@ if (window.__audioMasterInjected) {
 
 	chrome.runtime.onMessage.addListener((msg) => {
 		if (msg.type === "SET_VOLUME" && gainNode) {
-			gainNode.gain.value = msg.value;
+			gainNode.gain.value = msg.value * 2;
 		}
 		if (msg.type === "SET_BASS" && lowShelfBiquadFilter) {
 			lowShelfBiquadFilter.gain.value = (msg.value - 0.5) * 25;
@@ -79,6 +80,13 @@ if (window.__audioMasterInjected) {
 			highShelfBiquadFilter.gain.value = (msg.value - 0.5) * 25;
 		}
 		if (msg.type === "TOGGLE_EXTENSION") {
+			if (msg.isOn) {
+				source.disconnect();
+				source.connect(lowShelfBiquadFilter);
+			} else {
+				source.disconnect();
+				source.connect(audioCtx.destination);
+			}
 		}
 	});
 }

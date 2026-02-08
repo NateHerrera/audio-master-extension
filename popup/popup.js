@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 
 		const tabId = await ensureInjected();
-		chromes.tabs.sendMessage(tabId, {
+		chrome.tabs.sendMessage(tabId, {
 			type: "TOGGLE_EXTENSION",
 			isOn: toggleSwitch.classList.contains("fa-toggle-on"),
 		});
