@@ -6,16 +6,23 @@ const trebleSlider = document.getElementById("trebleSlider");
 async function ensureInjected() {
 	const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-	await chrome.scripting.executeScript({
-		target: { tabId: tab.id },
-		files: ["content.js"],
-	});
+	try {
+		await chrome.scripting.executeScript({
+			target: { tabId: tab.id },
+			files: ["content.js"],
+		});
+	} catch (e) {
+		console.warn("Cannot inject into this page:", e.message);
+		return null;
+	}
 
 	return tab.id;
 }
 
 volumeSlider.addEventListener("input", async () => {
-	const tabId = await ensureInjected(); // inject first
+	chrome.storage.local.set({ volumeSlider: Number(volumeSlider.value) });
+	const tabId = await ensureInjected();
+	if (!tabId) return; // if injection failed, don't send message
 
 	chrome.tabs.sendMessage(tabId, {
 		type: "SET_VOLUME",
@@ -24,7 +31,9 @@ volumeSlider.addEventListener("input", async () => {
 });
 
 bassSlider.addEventListener("input", async () => {
-	const tabId = await ensureInjected(); // inject first
+	chrome.storage.local.set({ bassSlider: Number(bassSlider.value) });
+	const tabId = await ensureInjected();
+	if (!tabId) return; // if injection failed, don't send message
 
 	chrome.tabs.sendMessage(tabId, {
 		type: "SET_BASS",
@@ -33,7 +42,9 @@ bassSlider.addEventListener("input", async () => {
 });
 
 midSlider.addEventListener("input", async () => {
-	const tabId = await ensureInjected(); // inject first
+	chrome.storage.local.set({ midSlider: Number(midSlider.value) });
+	const tabId = await ensureInjected();
+	if (!tabId) return; // if injection failed, don't send message
 
 	chrome.tabs.sendMessage(tabId, {
 		type: "SET_MID",
@@ -42,7 +53,9 @@ midSlider.addEventListener("input", async () => {
 });
 
 trebleSlider.addEventListener("input", async () => {
-	const tabId = await ensureInjected(); /// inject first
+	chrome.storage.local.set({ trebleSlider: Number(trebleSlider.value) });
+	const tabId = await ensureInjected();
+	if (!tabId) return; // if injection failed, don't send message
 
 	chrome.tabs.sendMessage(tabId, {
 		type: "SET_TREBLE",
@@ -140,9 +153,39 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 
 		const tabId = await ensureInjected();
+		if (!tabId) return;
+		chrome.storage.local.set({
+			isOn: toggleSwitch.classList.contains("fa-toggle-on"),
+		});
 		chrome.tabs.sendMessage(tabId, {
 			type: "TOGGLE_EXTENSION",
 			isOn: toggleSwitch.classList.contains("fa-toggle-on"),
 		});
 	});
 });
+
+chrome.storage.local.get(
+	["volumeSlider", "bassSlider", "midSlider", "trebleSlider", "isOn"],
+	(result) => {
+		if (result.volumeSlider !== undefined)
+			volumeSlider.value = result.volumeSlider;
+		if (result.bassSlider !== undefined) bassSlider.value = result.bassSlider;
+		if (result.midSlider !== undefined) midSlider.value = result.midSlider;
+		if (result.trebleSlider !== undefined)
+			trebleSlider.value = result.trebleSlider;
+
+		// restore the toggle switch UI
+		if (result.isOn !== undefined) {
+			const toggleSwitch = document.getElementById("switchModeIcon");
+			const toggleSwitchColor = document.getElementById("iconSwitchColor");
+
+			if (result.isOn) {
+				toggleSwitch.classList.replace("fa-toggle-off", "fa-toggle-on");
+				toggleSwitchColor.classList.replace(
+					"has-text-grey",
+					"has-text-success",
+				);
+			}
+		}
+	},
+);

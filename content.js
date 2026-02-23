@@ -61,7 +61,30 @@ if (window.__audioMasterInjected) {
 		highShelfBiquadFilter.connect(gainNode);
 		gainNode.connect(audioCtx.destination);
 
-		console.log("Audio Master initialized");
+		// After setting up nodes, restore saved state from storage
+		chrome.storage.local.get(
+			["volumeSlider", "bassSlider", "midSlider", "trebleSlider", "isOn"],
+			(result) => {
+				if (result.volumeSlider !== undefined)
+					gainNode.gain.value = (result.volumeSlider / 100) * 2;
+				if (result.bassSlider !== undefined)
+					lowShelfBiquadFilter.gain.value =
+						(result.bassSlider / 100 - 0.5) * 25;
+				if (result.midSlider !== undefined)
+					midShelfBiquadFilter.gain.value = (result.midSlider / 100 - 0.5) * 25;
+				if (result.trebleSlider !== undefined)
+					highShelfBiquadFilter.gain.value =
+						(result.trebleSlider / 100 - 0.5) * 25;
+
+				// if extension was toggled off, bypass the audio chain
+				if (result.isOn === false) {
+					source.disconnect();
+					source.connect(audioCtx.destination);
+				}
+			},
+		);
+
+		//console.log("Audio Master initialized");
 	}
 
 	initAudio();
