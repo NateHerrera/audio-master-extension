@@ -1,7 +1,23 @@
+// vars
 const volumeSlider = document.getElementById("volumeSlider");
 const bassSlider = document.getElementById("bassSlider");
 const midSlider = document.getElementById("midSlider");
 const trebleSlider = document.getElementById("trebleSlider");
+const lightDarkMode = document.getElementById("lightDarkModeIcon");
+const iconColor = document.getElementById("iconColor");
+const titleColor = document.getElementById("titleColor");
+const dropdownColor = document.getElementById("dropdownColor");
+
+// define the presets
+const presets = {
+	cinema: { volume: 70, bass: 60, mid: 55, treble: 60 },
+	gaming: { volume: 70, bass: 65, mid: 70, treble: 65 },
+	flat: { volume: 50, bass: 50, mid: 50, treble: 50 },
+	rnb: { volume: 60, bass: 70, mid: 60, treble: 45 },
+	hiphop: { volume: 65, bass: 75, mid: 45, treble: 50 },
+	rock: { volume: 65, bass: 60, mid: 45, treble: 65 },
+	grunge: { volume: 65, bass: 65, mid: 35, treble: 55 },
+};
 
 async function ensureInjected() {
 	const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -63,6 +79,14 @@ trebleSlider.addEventListener("input", async () => {
 	});
 });
 
+lightDarkMode.addEventListener("click", () => {
+	const newTheme = lightDarkMode.classList.contains("fa-moon")
+		? "light"
+		: "dark";
+	applyTheme(newTheme);
+	chrome.storage.local.set({ theme: newTheme });
+});
+
 document.addEventListener("DOMContentLoaded", () => {
 	const dropdown = document.querySelector(".dropdown");
 	const dropdownTrigger = dropdown.querySelector(".dropdown-trigger button");
@@ -74,54 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	document.addEventListener("click", () => {
 		dropdown.classList.remove("is-active");
-	});
-});
-
-// light/dark mode colors
-document.addEventListener("DOMContentLoaded", () => {
-	const lightDarkMode = document.getElementById("lightDarkModeIcon");
-	const iconColor = document.getElementById("iconColor");
-	const titleColor = document.getElementById("titleColor");
-	const dropdownColor = document.getElementById("dropdownColor");
-
-	lightDarkMode.addEventListener("click", () => {
-		if (lightDarkMode.classList.contains("fa-moon")) {
-			// get rid of the moon icon
-			lightDarkMode.classList.remove("fas");
-			lightDarkMode.classList.remove("fa-moon");
-			// add sun icon
-			lightDarkMode.classList.add("fas");
-			lightDarkMode.classList.add("fa-sun");
-			// change color of the icon
-			iconColor.classList.remove("has-text-link");
-			iconColor.classList.add("has-text-warning");
-			// change color of title
-			titleColor.classList.remove("has-text-warning");
-			titleColor.classList.add("has-text-link");
-			// change color of dropdown
-			dropdownColor.classList.remove("is-warning");
-			dropdownColor.classList.add("is-link");
-			// change theme
-			document.documentElement.setAttribute("data-theme", "light");
-		} else {
-			// get rid of the sun icon
-			lightDarkMode.classList.remove("fas");
-			lightDarkMode.classList.remove("fa-sun");
-			// add moon icon
-			lightDarkMode.classList.add("fas");
-			lightDarkMode.classList.add("fa-moon");
-			// change color of the icon
-			iconColor.classList.remove("has-text-warning");
-			iconColor.classList.add("has-text-link");
-			// change color of title
-			titleColor.classList.remove("has-text-link");
-			titleColor.classList.add("has-text-warning");
-			// change color of dropdown
-			dropdownColor.classList.remove("is-link");
-			dropdownColor.classList.add("is-warning");
-			// change theme
-			document.documentElement.setAttribute("data-theme", "dark");
-		}
 	});
 });
 
@@ -164,9 +140,34 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 });
 
+function applyTheme(theme) {
+	if (theme === "light") {
+		lightDarkMode.classList.remove("fa-moon");
+		lightDarkMode.classList.add("fa-sun");
+		iconColor.classList.remove("has-text-link");
+		iconColor.classList.add("has-text-warning");
+		titleColor.classList.remove("has-text-warning");
+		titleColor.classList.add("has-text-link");
+		dropdownColor.classList.remove("is-warning");
+		dropdownColor.classList.add("is-link");
+		document.documentElement.setAttribute("data-theme", "light");
+	} else {
+		lightDarkMode.classList.remove("fa-sun");
+		lightDarkMode.classList.add("fa-moon");
+		iconColor.classList.remove("has-text-warning");
+		iconColor.classList.add("has-text-link");
+		titleColor.classList.remove("has-text-link");
+		titleColor.classList.add("has-text-warning");
+		dropdownColor.classList.remove("is-link");
+		dropdownColor.classList.add("is-warning");
+		document.documentElement.setAttribute("data-theme", "dark");
+	}
+}
+
 chrome.storage.local.get(
-	["volumeSlider", "bassSlider", "midSlider", "trebleSlider", "isOn"],
+	["volumeSlider", "bassSlider", "midSlider", "trebleSlider", "isOn", "theme"],
 	(result) => {
+		if (result.theme !== undefined) applyTheme(result.theme);
 		if (result.volumeSlider !== undefined)
 			volumeSlider.value = result.volumeSlider;
 		if (result.bassSlider !== undefined) bassSlider.value = result.bassSlider;
