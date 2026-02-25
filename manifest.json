@@ -1,8 +1,14 @@
 {
 	"manifest_version": 3,
-	"name": "Audio Master",
-	"description": "Audio Master is your simple and all around mixer, equalizer, and audio controller.",
+	"name": "Eqify - Audio Master",
+	"description": "Eqify is a simple browser equalizer and volume booster. Control bass, mids, and treble with audio presets designed for cinema, gaming, music, and more.",
 	"version": "1.0",
+	"icons": {
+		"16": "images/icon-16.png",
+		"32": "images/icon-32.png",
+		"48": "images/icon-48.png",
+		"128": "images/icon-128.png"
+	},
 	"action": {
 		"default_popup": "popup/popup.html"
 	},
