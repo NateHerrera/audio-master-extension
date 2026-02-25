@@ -10,13 +10,13 @@ const dropdownColor = document.getElementById("dropdownColor");
 
 // define the presets
 const presets = {
-	cinema: { volume: 70, bass: 60, mid: 55, treble: 60 },
-	gaming: { volume: 70, bass: 65, mid: 70, treble: 65 },
-	flat: { volume: 50, bass: 50, mid: 50, treble: 50 },
-	rnb: { volume: 60, bass: 70, mid: 60, treble: 45 },
-	hiphop: { volume: 65, bass: 75, mid: 45, treble: 50 },
-	rock: { volume: 65, bass: 60, mid: 45, treble: 65 },
-	grunge: { volume: 65, bass: 65, mid: 35, treble: 55 },
+	cinema: { label: "Cinema", volume: 70, bass: 60, mid: 55, treble: 60 },
+	gaming: { label: "Gaming", volume: 70, bass: 65, mid: 70, treble: 65 },
+	flat: { label: "Flat", volume: 50, bass: 50, mid: 50, treble: 50 },
+	rnb: { label: "R&B", volume: 60, bass: 70, mid: 60, treble: 45 },
+	hiphop: { label: "Hip Hop", volume: 65, bass: 75, mid: 45, treble: 50 },
+	rock: { label: "Rock", volume: 65, bass: 60, mid: 45, treble: 65 },
+	grunge: { label: "Grunge", volume: 65, bass: 65, mid: 35, treble: 55 },
 };
 
 async function ensureInjected() {
@@ -35,8 +35,50 @@ async function ensureInjected() {
 	return tab.id;
 }
 
+Object.entries(presets).forEach(([name, values]) => {
+	document.getElementById(name).addEventListener("click", async () => {
+		document.getElementById("presetElement").textContent = values.label;
+		volumeSlider.value = values.volume;
+		bassSlider.value = values.bass;
+		midSlider.value = values.mid;
+		trebleSlider.value = values.treble;
+
+		chrome.storage.local.set({
+			volumeSlider: Number(values.volume),
+			bassSlider: Number(values.bass),
+			midSlider: Number(values.mid),
+			trebleSlider: Number(values.treble),
+			preset: values.label,
+		});
+
+		const tabId = await ensureInjected();
+		if (!tabId) return;
+
+		chrome.tabs.sendMessage(tabId, {
+			type: "SET_VOLUME",
+			value: values.volume / 100,
+		});
+		chrome.tabs.sendMessage(tabId, {
+			type: "SET_BASS",
+			value: values.bass / 100,
+		});
+		chrome.tabs.sendMessage(tabId, {
+			type: "SET_MID",
+			value: values.mid / 100,
+		});
+		chrome.tabs.sendMessage(tabId, {
+			type: "SET_TREBLE",
+			value: values.treble / 100,
+		});
+	});
+});
+
 volumeSlider.addEventListener("input", async () => {
-	chrome.storage.local.set({ volumeSlider: Number(volumeSlider.value) });
+	chrome.storage.local.set({
+		volumeSlider: Number(volumeSlider.value),
+		preset: "Custom",
+	});
+	document.getElementById("presetElement").textContent = "Custom";
 	const tabId = await ensureInjected();
 	if (!tabId) return; // if injection failed, don't send message
 
@@ -47,7 +89,11 @@ volumeSlider.addEventListener("input", async () => {
 });
 
 bassSlider.addEventListener("input", async () => {
-	chrome.storage.local.set({ bassSlider: Number(bassSlider.value) });
+	chrome.storage.local.set({
+		bassSlider: Number(bassSlider.value),
+		preset: "Custom",
+	});
+	document.getElementById("presetElement").textContent = "Custom";
 	const tabId = await ensureInjected();
 	if (!tabId) return; // if injection failed, don't send message
 
@@ -58,7 +104,11 @@ bassSlider.addEventListener("input", async () => {
 });
 
 midSlider.addEventListener("input", async () => {
-	chrome.storage.local.set({ midSlider: Number(midSlider.value) });
+	chrome.storage.local.set({
+		midSlider: Number(midSlider.value),
+		preset: "Custom",
+	});
+	document.getElementById("presetElement").textContent = "Custom";
 	const tabId = await ensureInjected();
 	if (!tabId) return; // if injection failed, don't send message
 
@@ -69,7 +119,11 @@ midSlider.addEventListener("input", async () => {
 });
 
 trebleSlider.addEventListener("input", async () => {
-	chrome.storage.local.set({ trebleSlider: Number(trebleSlider.value) });
+	chrome.storage.local.set({
+		trebleSlider: Number(trebleSlider.value),
+		preset: "Custom",
+	});
+	document.getElementById("presetElement").textContent = "Custom";
 	const tabId = await ensureInjected();
 	if (!tabId) return; // if injection failed, don't send message
 
@@ -165,7 +219,15 @@ function applyTheme(theme) {
 }
 
 chrome.storage.local.get(
-	["volumeSlider", "bassSlider", "midSlider", "trebleSlider", "isOn", "theme"],
+	[
+		"volumeSlider",
+		"bassSlider",
+		"midSlider",
+		"trebleSlider",
+		"isOn",
+		"theme",
+		"preset",
+	],
 	(result) => {
 		if (result.theme !== undefined) applyTheme(result.theme);
 		if (result.volumeSlider !== undefined)
@@ -174,6 +236,8 @@ chrome.storage.local.get(
 		if (result.midSlider !== undefined) midSlider.value = result.midSlider;
 		if (result.trebleSlider !== undefined)
 			trebleSlider.value = result.trebleSlider;
+		if (result.preset !== undefined)
+			document.getElementById("presetElement").textContent = result.preset;
 
 		// restore the toggle switch UI
 		if (result.isOn !== undefined) {
