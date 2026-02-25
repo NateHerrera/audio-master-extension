@@ -10,13 +10,13 @@ const dropdownColor = document.getElementById("dropdownColor");
 
 // define the presets
 const presets = {
-	cinema: { label: "Cinema", volume: 70, bass: 60, mid: 55, treble: 60 },
-	gaming: { label: "Gaming", volume: 70, bass: 65, mid: 70, treble: 65 },
+	cinema: { label: "Cinema", volume: 70, bass: 65, mid: 60, treble: 65 },
+	gaming: { label: "Gaming", volume: 70, bass: 60, mid: 75, treble: 70 },
 	flat: { label: "Flat", volume: 50, bass: 50, mid: 50, treble: 50 },
-	rnb: { label: "R&B", volume: 60, bass: 70, mid: 60, treble: 45 },
-	hiphop: { label: "Hip Hop", volume: 65, bass: 75, mid: 45, treble: 50 },
-	rock: { label: "Rock", volume: 65, bass: 60, mid: 45, treble: 65 },
-	grunge: { label: "Grunge", volume: 65, bass: 65, mid: 35, treble: 55 },
+	rnb: { label: "R&B", volume: 60, bass: 80, mid: 60, treble: 40 },
+	hiphop: { label: "Hip Hop", volume: 65, bass: 85, mid: 40, treble: 50 },
+	rock: { label: "Rock", volume: 65, bass: 60, mid: 35, treble: 70 },
+	grunge: { label: "Grunge", volume: 65, bass: 70, mid: 30, treble: 60 },
 };
 
 async function ensureInjected() {
