@@ -12,6 +12,7 @@
 	"action": {
 		"default_popup": "popup/popup.html"
 	},
+	"host_permissions": ["https://*/*", "http://*/*"],
 	"background": {
 		"service_worker": "background.js"
 	},
