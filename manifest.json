@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "Eqify - Audio Master",
-	"description": "Eqify is a simple browser equalizer and volume booster. Control bass, mids, and treble with audio presets designed for cinema, gaming, music, and more.",
+	"description": "Eqify is a simple browser equalizer and volume booster. Control bass, mids, and treble with audio presets.",
 	"version": "1.0",
 	"icons": {
 		"16": "images/icon-16.png",
